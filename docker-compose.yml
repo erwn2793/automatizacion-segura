@@ -1,0 +1,28 @@
+# n8n local para el curso. Uso: cp .env.example .env  (completar)  ->  docker compose up -d
+services:
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    container_name: n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    env_file: .env
+    environment:
+      - GENERIC_TIMEZONE=America/Lima
+      - TZ=America/Lima
+      # El workflow v2 lee configuracion NO secreta con $env (org, tenant, correos, sal del hash).
+      # Los secretos (client secret de UiPath, clave del webhook, SMTP) viven en Credentials, cifrados.
+      - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
+      # Retencion: borrar ejecuciones despues de 7 dias (168 horas)
+      - EXECUTIONS_DATA_PRUNE=true
+      - EXECUTIONS_DATA_MAX_AGE=168
+      # Logs a consola y a archivo (/home/node/.n8n/logs)
+      - N8N_LOG_LEVEL=info
+      - N8N_LOG_OUTPUT=console,file
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./n8n/workflows:/workflows:ro
+      - ./scripts:/scripts:ro
+
+volumes:
+  n8n_data:

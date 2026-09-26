@@ -1,0 +1,8 @@
+{
+  "nombre": "Sin Consentimiento",
+  "dni": "1234567",
+  "correo": "correo-invalido",
+  "tipo": "Consulta",
+  "detalle": "DNI de 7 digitos, correo mal escrito y sin consentimiento",
+  "consentimiento": false
+}

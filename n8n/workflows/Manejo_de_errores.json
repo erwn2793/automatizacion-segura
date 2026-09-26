@@ -1,0 +1,62 @@
+{
+  "id": "manejoErrores001",
+  "name": "Manejo de errores",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "6e7c44f3-9958-5cc5-943f-8dc407f54ab6",
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $env.CORREO_REMITENTE }}",
+        "toEmail": "={{ $env.CORREO_SOPORTE }}",
+        "subject": "=[ALERTA] Fallo en {{ $json.workflow.name }}",
+        "emailFormat": "html",
+        "html": "=<p>Fallo una automatizacion.</p>\n<ul>\n<li><b>Workflow:</b> {{ $json.workflow.name }}</li>\n<li><b>Nodo:</b> {{ $json.execution.lastNodeExecuted }}</li>\n<li><b>Error:</b> {{ $json.execution.error.message }}</li>\n<li><b>Ejecucion:</b> <a href=\"{{ $json.execution.url }}\">{{ $json.execution.id }}</a></li>\n</ul>\n<p>Siguiente paso: revisar la ejecucion y, si el fallo vino de un cambio reciente, aplicar docs/runbook-rollback.md.</p>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "47b5ffa9-5aaa-5140-9a59-f505ef42ce4f",
+      "name": "Avisar por correo",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        300
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "credSmtpCurso001",
+          "name": "SMTP del curso"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Avisar por correo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "tags": []
+}

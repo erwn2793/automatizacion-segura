@@ -1,0 +1,9 @@
+{
+  "nombre": "Ana Prueba Ficticia",
+  "dni": "12345678",
+  "correo": "ana.prueba@example.com",
+  "telefono": "999000111",
+  "tipo": "Consulta",
+  "detalle": "Deseo informacion sobre el estado de mi tramite",
+  "consentimiento": true
+}

@@ -1,0 +1,19 @@
+# Secretos y configuracion local
+.env
+*.key
+*.pem
+**/credentials*.json
+.rollback-tmp.json
+
+# UiPath: archivos locales de Studio
+uipath/**/.local/
+uipath/**/.objects/
+uipath/**/.tmh/
+
+# Power Platform: paquetes generados (se versiona la solucion desempaquetada)
+*.zip
+out/
+
+# Sistema
+.DS_Store
+Thumbs.db

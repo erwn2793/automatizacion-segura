@@ -1,0 +1,103 @@
+{
+  "id": "solicitudesV1ins",
+  "name": "Solicitudes v1 - insegura",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "solicitudes",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "89f40ce2-c532-5431-bcff-feb74dc13189",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        300
+      ],
+      "webhookId": "6b3a9072-69a2-5a9c-a9a7-78b00bf3e08d"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://cloud.uipath.com/identity_/connect/token",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "specifyBody": "string",
+        "body": "grant_type=client_credentials&client_id=8d1c7f3a-2b4e-4f6a-9c0d-1e2f3a4b5c6d&scope=OR.Jobs%20OR.Execution&client_secret=Xq7vB2kLp9ZrT4mW8sN1cY6hF3jD0gAe",
+        "options": {}
+      },
+      "id": "e2034390-0027-5e4f-9c7d-42f6351b7a5f",
+      "name": "Obtener token UiPath",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://cloud.uipath.com/miorganizacion/DefaultTenant/orchestrator_/odata/Jobs/UiPath.Server.Configuration.OData.StartJobs",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json.access_token }}"
+            },
+            {
+              "name": "X-UIPATH-OrganizationUnitId",
+              "value": "123456"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ startInfo: { ReleaseKey: '00000000-0000-0000-0000-000000000000', Strategy: 'ModernJobsCount', JobsCount: 1, InputArguments: JSON.stringify({ in_Solicitud: JSON.stringify($('Webhook').item.json.body) }) } }) }}",
+        "options": {}
+      },
+      "id": "a4e56bbd-0a9e-570e-9e44-a3e67bd40ebe",
+      "name": "Iniciar robot UiPath",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Obtener token UiPath",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener token UiPath": {
+      "main": [
+        [
+          {
+            "node": "Iniciar robot UiPath",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "tags": []
+}

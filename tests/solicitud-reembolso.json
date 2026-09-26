@@ -1,0 +1,9 @@
+{
+  "nombre": "Luis Prueba Ficticio",
+  "dni": "87654321",
+  "correo": "luis.prueba@example.com",
+  "telefono": "999000222",
+  "tipo": "Reembolso",
+  "detalle": "Solicito el reembolso de un cobro duplicado",
+  "consentimiento": true
+}
