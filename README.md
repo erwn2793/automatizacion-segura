@@ -39,7 +39,13 @@ docker compose up -d              # abrir http://localhost:5678 y crear la cuent
 docker compose exec -u node n8n n8n import:workflow --separate --input=/workflows
 ```
 
-Importacion desde la interfaz (sin Docker): en n8n abre **Workflows → ⋮ → Import from File** y elige `n8n/importar-en-n8n.json`. Ese archivo trae los 3 workflows en un solo JSON. El orden de importacion es Manejo de errores, v1 y v2, para que el workflow de errores ya exista cuando se importe el v2.
+Importacion desde la interfaz: abre un workflow vacio y usa el menu del workflow (los tres puntos) → **Import from File**. Repite una vez por archivo, en este orden:
+
+1. `n8n/workflows/Manejo_de_errores.json`
+2. `n8n/workflows/Solicitudes_v1_insegura.json`
+3. `n8n/workflows/Solicitudes_v2_segura.json`
+
+Cada archivo es un solo workflow. n8n rechaza un JSON que sea una lista de varios.
 
 Luego, en el editor de n8n:
 
